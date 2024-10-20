@@ -1,0 +1,102 @@
+class MusicPlayer:
+    def __init__(self):
+        self.playlist = []
+        self.current_song_index = 0
+        self.paused = False
+
+    def add_song(self, song):
+        self.playlist.append(song)
+        print(f"Song '{song}' added successfully.")
+    def play_song(self):
+        if self.playlist:
+            print("Now playing:", self.playlist[self.current_song_index])
+        else:
+            print("No songs in playlist.")
+
+    def pause_song(self):
+        if self.playlist:
+            print("Paused:", self.playlist[self.current_song_index])
+        else:
+            print("No songs in playlist.")
+    def skip_song(self):
+        if not self.playlist:
+            print("No songs in playlist.")
+            return
+
+        self.current_song_index += 1
+        if self.current_song_index >= len(self.playlist):
+            self.current_song_index = 0  # Reset to start of the playlist
+            print("End of playlist, returning to the first song.")
+        self.play_song()
+    def previous_song(self):
+        if not self.playlist:
+            print("No songs in playlist.")
+            return
+
+        self.current_song_index -= 1
+        if self.current_song_index < 0:
+            self.current_song_index = len(self.playlist) - 1  # Go to the last song in the playlist
+            print("Start of playlist, returning to the last song.")
+        self.play_song()
+    def delete_song(self, song):
+        if song in self.playlist:
+            index = self.playlist.index(song)
+            self.playlist.remove(song)
+            print(f"Song '{song}' deleted successfully.")
+            # Adjust current_song_index if necessary
+            if index < self.current_song_index:
+                self.current_song_index -= 1
+            elif index == self.current_song_index:
+                if self.current_song_index >= len(self.playlist):
+self.current_song_index = 0  # Reset to start of the playlist
+        else:
+            print(f"Song '{song}' not found in the playlist.")
+
+    def view_playlist(self):
+        if self.playlist:
+            print("Current Playlist:")
+            for index, song in enumerate(self.playlist, start=1):
+                print(f"{index}. {song}")
+        else:
+            print("Playlist is empty.")
+    def interact(self):
+        while True:
+            print("Enter 1 to play, 2 to pause, 3 to skip, 4 to add a song, 5 to play previous song, 6 to delete a song, 7 to view playlist, or 8 to exit.")
+            choice = input("Enter your choice: ")
+
+            if choice == '1':
+                self.paused = False
+                self.play_song()
+            elif choice == '2':
+                self.paused = True
+                self.pause_song()
+            elif choice == '3':
+self.skip_song()
+            elif choice == '4':
+                new_song = input("Enter the name of the next song to add to the playlist: ")
+                self.add_song(new_song)
+            elif choice == '5':
+                self.previous_song()
+            elif choice == '6':
+                song_to_delete = input("Enter the name of the song to delete from the playlist: ")
+                self.delete_song(song_to_delete)
+            elif choice == '7':
+self.view_playlist()
+            elif choice == '8':
+                print("Exiting music player.")
+                break
+            else:
+                print("Invalid choice")
+
+def main():
+    player = MusicPlayer()
+    while True:
+        song = input("Enter the name of the song to add to the playlist (or 'exit' to start the player): ")
+        if song.lower() == 'exit':
+            break
+player.add_song(song)
+    player.interact()
+
+if __name__ == "__main__":
+    main()
+
